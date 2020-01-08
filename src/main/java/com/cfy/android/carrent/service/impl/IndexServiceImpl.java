@@ -2,6 +2,7 @@ package com.cfy.android.carrent.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.cfy.android.carrent.mapper.UserMapper;
+import com.cfy.android.carrent.model.Car;
 import com.cfy.android.carrent.model.User;
 import com.cfy.android.carrent.service.IndexService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,4 +25,11 @@ public class IndexServiceImpl implements IndexService {
         return user;
 
     }
+
+    @Override
+    public void changeImage(String id, String path) {
+        userMapper.changeImage(id,path);
+    }
+
+
 }

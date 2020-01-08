@@ -18,4 +18,6 @@ public class User {
     private String token;
     private long createTime;
     private long updateTime;
+    private String imagePath;
+    private int type;
 }

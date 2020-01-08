@@ -2,12 +2,15 @@ package com.cfy.android.carrent.controller;
 
 
 import com.cfy.android.carrent.service.SignUpService;
+import com.cfy.android.carrent.service.vo.ImageUploadMessage;
 import com.cfy.android.carrent.service.vo.SendSmsMessage;
 import com.cfy.android.carrent.service.vo.SignUpMessage;
 import com.cfy.android.carrent.service.vo.SignUpVo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @Controller
 public class SignUpController {
@@ -15,6 +18,8 @@ public class SignUpController {
     @Autowired
     private SignUpService signUpService;
 
+    @Value("${com.cfy.tmpLocation}")
+    private String resourceLocation;
     @GetMapping("/signUp")
     public String signUp() {
         return "signUp";
@@ -47,6 +52,8 @@ public class SignUpController {
         String name = signUpVo.getName();
         String password = signUpVo.getPassword();
         String authCode = signUpVo.getAuthCode();
+        String imagePath = signUpVo.getImagePath();
+
         //新建注册信息
         SignUpMessage message = new SignUpMessage();
         message.setPhone(phone);
@@ -80,6 +87,11 @@ public class SignUpController {
         return message;
     }
 
+    @PostMapping("/upLoadImage")
+    @ResponseBody
+    public ImageUploadMessage upLoadImage(@RequestParam(value = "file") MultipartFile file) {
+        return signUpService.saveImage(file);
+    }
 
 
 }

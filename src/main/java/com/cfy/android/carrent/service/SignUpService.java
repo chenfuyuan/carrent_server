@@ -1,8 +1,10 @@
 package com.cfy.android.carrent.service;
 
+import com.cfy.android.carrent.service.vo.ImageUploadMessage;
 import com.cfy.android.carrent.service.vo.SendSmsMessage;
 import com.cfy.android.carrent.service.vo.SignUpVo;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 @Service
 public interface SignUpService {
@@ -44,5 +46,6 @@ public interface SignUpService {
      */
     public boolean saveUser(SignUpVo signUpVo);
 
+    public ImageUploadMessage saveImage(MultipartFile file);
 
 }

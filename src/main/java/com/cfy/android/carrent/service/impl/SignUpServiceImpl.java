@@ -5,6 +5,7 @@ import com.cfy.android.carrent.mapper.UserMapper;
 import com.cfy.android.carrent.model.User;
 import com.cfy.android.carrent.provider.AliyunSmsProvider;
 import com.cfy.android.carrent.service.SignUpService;
+import com.cfy.android.carrent.service.vo.ImageUploadMessage;
 import com.cfy.android.carrent.service.vo.SendSmsMessage;
 import com.cfy.android.carrent.service.vo.SignUpVo;
 import com.cfy.android.carrent.utils.AuthCodeRandom;
@@ -12,7 +13,10 @@ import com.cfy.android.carrent.utils.MD5Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.Date;
 import java.util.UUID;
 
@@ -57,6 +61,9 @@ public class SignUpServiceImpl implements SignUpService {
 //        //调用将验证码和手机传递给阿里云短信进行短信发送
 //        aliyunSmsProvider.sendSms(sendSmsMessage);
 
+        //模拟发送成功，需要注释掉
+
+        sendSmsMessage.setSuccess(true);
         return sendSmsMessage;
     }
 
@@ -127,7 +134,46 @@ public class SignUpServiceImpl implements SignUpService {
         user.setCreateTime(nowTime);
         user.setUpdateTime(nowTime);
         user.setToken(UUID.randomUUID().toString());
+        user.setImagePath(signUpVo.getImagePath());
+        user.setType(0);
         userMapper.insert(user);
         return false;
+    }
+
+    @Override
+    public ImageUploadMessage saveImage(MultipartFile file) {
+        if (file.isEmpty()) {
+            return new ImageUploadMessage(false, "图片为空",null);
+        }
+
+        //获取文件名
+        String fileName = file.getOriginalFilename();
+        System.out.println("上传的文件名为:" + fileName);
+
+        //获取文件的后缀名
+        String suffixName = fileName.substring(fileName.lastIndexOf("."));
+        System.out.println("文件的后缀名为:" + suffixName);
+
+        //文件上传后的路径
+
+        fileName = UUID.randomUUID() + suffixName;
+        String path = "image/";
+        File dest = new File(path+fileName);
+        System.out.println(dest);
+        //检测是否存在目录
+        if (!dest.getParentFile().exists()) {
+            dest.getParentFile().mkdir();
+        }
+
+        try {
+            file.transferTo(dest);
+            ImageUploadMessage message = new ImageUploadMessage(true,"头像上传成功",fileName);
+            return message;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return new ImageUploadMessage(false, "上传照片失败", null);
+
     }
 }
