@@ -8,16 +8,12 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@TableName("car")
-public class Car {
+@TableName("subCar")
+public class SubCar {
     private int id;
-    private String carType;
-    private String carNumber;
     private User user;
-    private int uid;
-    private String startTime;
-    private String endTime;
-    private String imagePath;
+    private Car car;
+    private String subDateTime;
+    private String phone;
     private int state;
-
 }
