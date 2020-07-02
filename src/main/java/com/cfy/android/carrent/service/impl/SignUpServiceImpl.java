@@ -59,11 +59,11 @@ public class SignUpServiceImpl implements SignUpService {
 //        通过阿里云发送短信验证码
         sendSmsMessage.setAuthCode(authCode);
 //        //调用将验证码和手机传递给阿里云短信进行短信发送
-//        aliyunSmsProvider.sendSms(sendSmsMessage);
+        aliyunSmsProvider.sendSms(sendSmsMessage);
 
         //模拟发送成功，需要注释掉
 
-        sendSmsMessage.setSuccess(true);
+//        sendSmsMessage.setSuccess(true);
         return sendSmsMessage;
     }
 

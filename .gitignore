@@ -29,3 +29,10 @@ build/
 
 ### VS Code ###
 .vscode/
+
+.mvn
+mvnw.cmd
+mvnw
+test
+target
+/src/main/resources/**.properties
